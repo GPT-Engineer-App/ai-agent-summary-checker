@@ -1,23 +1,18 @@
 import React, { useState } from "react";
-import { Container, VStack, Text, Input, Button, Box, useToast } from "@chakra-ui/react";
+import { Container, VStack, Text, Select, Button, Box, useToast } from "@chakra-ui/react";
 import { FaUpload } from "react-icons/fa";
 
 const Index = () => {
-  const [cv, setCv] = useState(null);
-  const [feedback, setFeedback] = useState(null);
-  const [positionDescription, setPositionDescription] = useState(null);
+  const [selectedCandidate, setSelectedCandidate] = useState("");
+  const [selectedPosition, setSelectedPosition] = useState("");
   const [summary, setSummary] = useState("");
   const toast = useToast();
 
-  const handleFileChange = (e, setFile) => {
-    setFile(e.target.files[0]);
-  };
-
   const handleSubmit = () => {
-    if (!cv || !feedback || !positionDescription) {
+    if (!selectedCandidate || !selectedPosition) {
       toast({
         title: "Error",
-        description: "Please upload all required files.",
+        description: "Please select both a candidate and a position.",
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -25,8 +20,7 @@ const Index = () => {
       return;
     }
 
-    // Simulate an AI agent processing the files and returning a summary
-    setSummary("The user fits the position based on the provided CV, feedback, and position description.");
+    setSummary(`Candidate ${selectedCandidate} fits the position ${selectedPosition}.`);
   };
 
   return (
@@ -35,18 +29,21 @@ const Index = () => {
         <Text fontSize="2xl">AI Agent for Position Fit Analysis</Text>
 
         <Box width="100%">
-          <Text>Upload CV:</Text>
-          <Input type="file" onChange={(e) => handleFileChange(e, setCv)} icon={<FaUpload />} />
+          <Text>Select Candidate:</Text>
+          <Select placeholder="Select candidate" onChange={(e) => setSelectedCandidate(e.target.value)}>
+            <option value="Candidate 1">Candidate 1</option>
+            <option value="Candidate 2">Candidate 2</option>
+            <option value="Candidate 3">Candidate 3</option>
+          </Select>
         </Box>
 
         <Box width="100%">
-          <Text>Upload Feedback:</Text>
-          <Input type="file" onChange={(e) => handleFileChange(e, setFeedback)} icon={<FaUpload />} />
-        </Box>
-
-        <Box width="100%">
-          <Text>Upload Position Description:</Text>
-          <Input type="file" onChange={(e) => handleFileChange(e, setPositionDescription)} icon={<FaUpload />} />
+          <Text>Select Position:</Text>
+          <Select placeholder="Select position" onChange={(e) => setSelectedPosition(e.target.value)}>
+            <option value="Position 1">Position 1</option>
+            <option value="Position 2">Position 2</option>
+            <option value="Position 3">Position 3</option>
+          </Select>
         </Box>
 
         <Button colorScheme="teal" onClick={handleSubmit} leftIcon={<FaUpload />}>
